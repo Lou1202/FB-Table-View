@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PostTableViewController: UITableViewController {
+class PostTableViewController: UITableViewController, PostViewControllerDelegate {
     
     var selectSection: Int?
 
@@ -19,8 +19,12 @@ class PostTableViewController: UITableViewController {
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
     }
     
+    func updateTable() {
+        tableView.reloadData()
+    }
 
     
     
@@ -33,7 +37,11 @@ class PostTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 1
+        if section == 3 {
+            return postArray[selectSection!].comments.count
+        } else {
+            return 1
+        }
     }
     
     
@@ -58,7 +66,7 @@ class PostTableViewController: UITableViewController {
             return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(CommentTableViewCell.self)" , for: indexPath) as? CommentTableViewCell else { fatalError("CommentTableViewCell failed ") }
-            let postComment = postArray[selectSection].comments[0]
+            let postComment = postArray[selectSection].comments[indexPath.row]
             cell.updateUI(with: postComment)
             return cell
         }
@@ -122,5 +130,6 @@ class PostTableViewController: UITableViewController {
     
     
 }
+
 
 
