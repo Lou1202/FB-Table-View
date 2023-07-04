@@ -24,14 +24,10 @@ class LikesTableViewCell: UITableViewCell {
     }
     
     func updateUI(with postInfo: PostInfo){
+        
         LikesLabel.text = String(postInfo.likes)
         sharesLabel.text = String(postInfo.shares)+"次分享"
-        // 設定背景色為透明
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor.clear
         
-        // cell 的 selectedBackgroundView
-        selectedBackgroundView = backgroundView
     }
 
 }

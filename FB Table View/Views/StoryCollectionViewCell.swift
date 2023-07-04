@@ -26,7 +26,12 @@ class StoryCollectionViewCell: UICollectionViewCell {
         
         storyNameLabel.text = postInfo.userName
         storyProfilePictureImageView.image = UIImage(named: postInfo.profilePictureName)
-        storyPictureImageView.image = UIImage(named: postInfo.imageName)
+        
+        if let imageName = postInfo.imageName {
+            storyPictureImageView.image = UIImage(named: imageName)
+        } else {
+            storyPictureImageView.image = nil
+        }
     }
     
     

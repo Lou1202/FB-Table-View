@@ -13,6 +13,7 @@ class CommentTableViewCell: UITableViewCell {
     @IBOutlet weak var commentLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var likesLabel: UILabel!
     
     
     override func awakeFromNib() {
@@ -27,14 +28,21 @@ class CommentTableViewCell: UITableViewCell {
     }
     
     func updateUI(with postComment: PostComment) {
+        
         userImageView.image = UIImage(named: postComment.profilePictureName)
         commentLabel.text = "\(postComment.userName)\n\(postComment.content)"
-        timeLabel.text = postComment.timestamp
-        // 設定背景色為透明
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor.clear
-        // cell 的 selectedBackgroundView
-        selectedBackgroundView = backgroundView
+        timeLabel.text = timeAgoDisplay(date: postComment.timestamp)
+        if postComment.likes != 0 {
+            likesLabel.text = "\(postComment.likes)👍"
+        } else {
+            likesLabel.text = ""
+        }
+        if postComment.isLiked {
+            likeButton.tintColor = UIColor(red: 23/255, green: 119/255, blue: 241/255, alpha: 1)
+        } else {
+            likeButton.tintColor = UIColor(red: 100/255, green: 103/255, blue: 106/255, alpha: 1)
+        }
+        
     }
 
 }

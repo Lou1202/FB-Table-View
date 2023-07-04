@@ -10,8 +10,8 @@ import PhotosUI
 
 class HomePageTableViewController: UITableViewController {
     
-//    var previousOffset: CGFloat = 0
-    
+    //var previousOffset: CGFloat = 0
+    var selectedSection: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,26 +25,33 @@ class HomePageTableViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        postArray.sort { (post1, post2) -> Bool in
+            return post1.timestamp > post2.timestamp
+        }
+        
         tableView.reloadData()
     }
     
-//    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let currentOffset = scrollView.contentOffset.y
-//        let isScrollUp = currentOffset < previousOffset
-//        let isScrollDown = currentOffset > previousOffset
-//
-//        if isScrollUp {
-//            self.navigationController?.isNavigationBarHidden = false
-//        } else if isScrollDown {
-//            self.navigationController?.isNavigationBarHidden = true
-//        }
-//
-//        previousOffset = currentOffset
-//    }
     
-
+    //    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    //        let currentOffset = scrollView.contentOffset.y
+    //        let isScrollUp = currentOffset < previousOffset
+    //        let isScrollDown = currentOffset > previousOffset
+    //
+    //        if isScrollUp {
+    //            self.navigationController?.isNavigationBarHidden = false
+    //        } else if isScrollDown {
+    //            self.navigationController?.isNavigationBarHidden = true
+    //        }
+    //
+    //        previousOffset = currentOffset
+    //    }
     
     
+    
+    //自訂Navigationbar
     func setNavigationbar() {
         //設定左邊選單按鈕
         let menuButton = UIButton(type: .system)
@@ -95,7 +102,7 @@ class HomePageTableViewController: UITableViewController {
         //設定選單(menu)按鈕
         plusButton.showsMenuAsPrimaryAction = true
         plusButton.menu = UIMenu(children: [UIAction(title: "發佈",image: UIImage(systemName: "square.and.pencil") ,handler: { _ in
-            print("發佈")
+            self.performSegue(withIdentifier: "showPostViewController", sender: self)
         }),
                                             UIAction(title: "限時動態",image: UIImage(systemName: "book.fill") ,handler: { _ in
             print("限時動態")
@@ -118,7 +125,7 @@ class HomePageTableViewController: UITableViewController {
     func commentTest() {
         
         for i in 0..<postArray.count {
-            postArray[i].comments.append(PostComment(userName: postArray[i].userName, profilePictureName: postArray[i].profilePictureName, content: "hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world", timestamp: "5分鐘"))
+            postArray[i].postComments.append(PostComment(userName: postArray[i].userName, profilePictureName: postArray[i].profilePictureName, content: "hello world", timestamp: Date()))
         }
     }
     
@@ -130,56 +137,56 @@ class HomePageTableViewController: UITableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        
         return 2 + postArray.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        
-        if section < 2{
-            return 1
-        } else {
-            return 2
-        }
+        return section < 2 ? 1 : 2
     }
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: UITableViewCell
         
         if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(TopTableViewCell.self)", for: indexPath) as? TopTableViewCell else {
+            guard let topCell = tableView.dequeueReusableCell(withIdentifier: "\(TopTableViewCell.self)", for: indexPath) as? TopTableViewCell else {
                 fatalError("TopTableViewCell failed") }
-            return cell
+            cell = topCell
             
         } else if indexPath.section == 1  {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(StoryTableViewCell.self)", for: indexPath) as? StoryTableViewCell else { fatalError("StoryTableViewCell failed") }
-            return cell
+            guard let storyCell = tableView.dequeueReusableCell(withIdentifier: "\(StoryTableViewCell.self)", for: indexPath) as? StoryTableViewCell else { fatalError("StoryTableViewCell failed") }
+            cell = storyCell
             
         } else if indexPath.row == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(HomePagePostTableViewCell.self)", for: indexPath) as? HomePagePostTableViewCell else { fatalError("HomePagePostTableViewCell failed") }
+            guard let postCell = tableView.dequeueReusableCell(withIdentifier: "\(HomePagePostTableViewCell.self)", for: indexPath) as? HomePagePostTableViewCell else { fatalError("HomePagePostTableViewCell failed") }
             let postInfo = postArray[indexPath.section - 2]
-            cell.updateUI(with: postInfo)
-            return cell
+            postCell.updateUI(with: postInfo)
+            cell = postCell
         } else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(PostButtonTableViewCell.self)", for: indexPath) as? PostButtonTableViewCell else { fatalError("PostBarTableViewCell failed") }
+            guard let postButtonCell = tableView.dequeueReusableCell(withIdentifier: "\(PostButtonTableViewCell.self)", for: indexPath) as? PostButtonTableViewCell else { fatalError("PostBarTableViewCell failed") }
             let postInfo = postArray[indexPath.section - 2]
-            cell.updateUI(with: postInfo)
-            return cell
+            postButtonCell.updateUI(with: postInfo)
+            postButtonCell.commentButton.tag = indexPath.section
+            cell = postButtonCell
         }
+        
+        // 設定背景色為透明
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.clear
+        
+        // cell 的 selectedBackgroundView
+        cell.selectedBackgroundView = backgroundView
+    
+        return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 1 {
-            return 180
-        } else {
-            return UITableView.automaticDimension
-        }
-        
+        return indexPath.section == 1 ? 180 : UITableView.automaticDimension
     }
     
     
-    @IBAction func selectphoto(_ sender: Any) {
+    @IBAction func selectphoto(_ sender: UIButton) {
         var configuration = PHPickerConfiguration()
         configuration.filter = .images
         let picker = PHPickerViewController(configuration: configuration)
@@ -194,12 +201,13 @@ class HomePageTableViewController: UITableViewController {
         let point = sender.convert(CGPoint.zero, to: tableView)
         if let indexPath = tableView.indexPathForRow(at: point){
             let section = indexPath.section
-            postArray[section - 2].isLiked = !postArray[section - 2].isLiked
-            let likeBtnImageName = postArray[section - 2].likeButtonImageName
-            sender.setImage(UIImage(systemName: likeBtnImageName), for: .normal)
+            let postSection = section - 2
+            postArray[postSection].isLiked = !postArray[postSection].isLiked
+            let likeButtonImageName = postArray[postSection].likeButtonImageName
+            sender.setImage(UIImage(systemName: likeButtonImageName), for: .normal)
             
             
-            if postArray[section - 2].isLiked {
+            if postArray[postSection].isLiked {
                 sender.tintColor = UIColor(red: 23/255, green: 119/255, blue: 241/255, alpha: 1)
             } else {
                 sender.tintColor = UIColor(red: 100/255, green: 103/255, blue: 106/255, alpha: 1)
@@ -212,23 +220,25 @@ class HomePageTableViewController: UITableViewController {
             
         }
     }
-    
-    
-
-    @IBSegueAction func showPost(_ coder: NSCoder) -> PostViewController? {
-        guard let section = tableView.indexPathForSelectedRow?.section else { return nil }
-        let selectSection = section - 2
-        return PostViewController(coder: coder, selectSection: selectSection)
+    @IBAction func commentButtonTapped(_ sender: UIButton) {
+        self.selectedSection = sender.tag
     }
     
+    @IBSegueAction func showPost(_ coder: NSCoder) -> CommentViewController? {
+        guard let section = tableView.indexPathForSelectedRow?.section else { return nil }
+        let selectSection = section - 2
+        return CommentViewController(coder: coder, selectSection: selectSection, shouldOpenKeyboard: false)
+    }
     
+
     
-    
-    
-    
-    
-    
-    
+    @IBSegueAction func showPostComment(_ coder: NSCoder) -> CommentViewController? {
+        guard let section = self.selectedSection else { return nil }
+            let selectSection = section - 2
+        return CommentViewController(coder: coder, selectSection: selectSection, shouldOpenKeyboard: true)
+        
+    }
+
     /*
      // Override to support conditional editing of the table view.
      override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -264,14 +274,22 @@ class HomePageTableViewController: UITableViewController {
      }
      */
     
-    /*
+
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
+         if segue.identifier == "selcetPhoto",
+            let postViewController = segue.destination as? PostViewController,
+            let image = sender as? UIImage {
+             postViewController.selectedImage = image
+         }
+         
+         if segue.identifier == "showPostViewController",
+                segue.destination is PostViewController {
+                // 如果需要，你可以在这里设置 PostViewController 的任何属性
+             }
      }
-     */
+
     
 }

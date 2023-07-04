@@ -9,8 +9,9 @@ import UIKit
 
 class PostButtonTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var likeButton: UIButton! 
+    @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var commentButton: UIButton!
+    
     
     
     override func awakeFromNib() {
@@ -33,12 +34,7 @@ class PostButtonTableViewCell: UITableViewCell {
             likeButton.setImage(UIImage(systemName: postInfo.likeButtonImageName), for: .normal)
             likeButton.tintColor = UIColor(red: 100/255, green: 103/255, blue: 106/255, alpha: 1)
         }
-        // 設定背景色為透明
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor.clear
         
-        // cell 的 selectedBackgroundView
-        selectedBackgroundView = backgroundView
     }
 
 }

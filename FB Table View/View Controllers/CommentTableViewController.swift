@@ -7,9 +7,14 @@
 
 import UIKit
 
-class PostTableViewController: UITableViewController, PostViewControllerDelegate {
+protocol CommentButtonDelegate: AnyObject {
+    func commentButtonTapped()
+}
+
+class CommentTableViewController: UITableViewController {
     
     var selectSection: Int?
+    weak var delegate: CommentButtonDelegate?
 
     
     override func viewDidLoad() {
@@ -22,9 +27,7 @@ class PostTableViewController: UITableViewController, PostViewControllerDelegate
         
     }
     
-    func updateTable() {
-        tableView.reloadData()
-    }
+    
 
     
     
@@ -32,45 +35,48 @@ class PostTableViewController: UITableViewController, PostViewControllerDelegate
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 4
+        guard let selectSection = selectSection else { return 3 }
+        return 3 + postArray[selectSection].postComments.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if section == 3 {
-            return postArray[selectSection!].comments.count
-        } else {
             return 1
-        }
     }
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+        let cell: UITableViewCell
         guard let selectSection = selectSection else { return UITableViewCell() }
         
         if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(PostTableViewCell.self)", for: indexPath) as? PostTableViewCell else { fatalError("PostTableViewCell failed") }
+            guard let postCell = tableView.dequeueReusableCell(withIdentifier: "\(PostTableViewCell.self)", for: indexPath) as? PostTableViewCell else { fatalError("PostTableViewCell failed") }
             let postInfo = postArray[selectSection]
-            cell.updateUI(with: postInfo)
-            return cell
+            postCell.updateUI(with: postInfo)
+            cell = postCell
         } else if indexPath.section == 1 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(PostButtonTableViewCell.self)", for: indexPath) as? PostButtonTableViewCell else { fatalError("PostBarTableViewCell failed") }
+            guard let postButtonCell = tableView.dequeueReusableCell(withIdentifier: "\(PostButtonTableViewCell.self)", for: indexPath) as? PostButtonTableViewCell else { fatalError("PostBarTableViewCell failed") }
             let postInfo = postArray[selectSection]
-            cell.updateUI(with: postInfo)
-            return cell
+            postButtonCell.updateUI(with: postInfo)
+            cell = postButtonCell
         } else if indexPath.section == 2 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(LikesTableViewCell.self)", for: indexPath) as? LikesTableViewCell else { fatalError("LikesTableViewCell failed") }
+            guard let likesCell = tableView.dequeueReusableCell(withIdentifier: "\(LikesTableViewCell.self)", for: indexPath) as? LikesTableViewCell else { fatalError("LikesTableViewCell failed") }
             let postInfo = postArray[selectSection]
-            cell.updateUI(with: postInfo)
-            return cell
+            likesCell.updateUI(with: postInfo)
+            cell = likesCell
         } else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(CommentTableViewCell.self)" , for: indexPath) as? CommentTableViewCell else { fatalError("CommentTableViewCell failed ") }
-            let postComment = postArray[selectSection].comments[indexPath.row]
-            cell.updateUI(with: postComment)
-            return cell
+            guard let commentCell = tableView.dequeueReusableCell(withIdentifier: "\(CommentTableViewCell.self)" , for: indexPath) as? CommentTableViewCell else { fatalError("CommentTableViewCell failed ") }
+            let postComment = postArray[selectSection].postComments[indexPath.section - 3]
+            commentCell.updateUI(with: postComment)
+            cell = commentCell
         }
-        
+        // 設定背景色為透明
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.clear
+
+        // cell 的 selectedBackgroundView
+        cell.selectedBackgroundView = backgroundView
+        return cell
     }
     
     @IBAction func likePost(_ sender: UIButton) {
@@ -90,6 +96,32 @@ class PostTableViewController: UITableViewController, PostViewControllerDelegate
         let postIndexPath = [IndexPath(row: 0, section: 2)]
         // 重新載入表格
         tableView.reloadRows(at: postIndexPath, with: .none)
+    }
+    
+    
+    @IBAction func likeComment(_ sender: UIButton) {
+        let point = sender.convert(CGPoint.zero, to: tableView)
+        if let indexPath = tableView.indexPathForRow(at: point),
+            let selectSection = selectSection {
+            let section = indexPath.section
+            let commentSection = section - 3
+            postArray[selectSection].postComments[commentSection].isLiked = !postArray[selectSection].postComments[commentSection].isLiked
+            
+            if postArray[selectSection].postComments[commentSection].isLiked {
+                sender.tintColor = UIColor(red: 23/255, green: 119/255, blue: 241/255, alpha: 1)
+            } else {
+                sender.tintColor = UIColor(red: 100/255, green: 103/255, blue: 106/255, alpha: 1)
+            }
+            
+            let commentIndexPath = [IndexPath(row: 0, section: section)]
+            tableView.reloadRows(at: commentIndexPath, with: .none)
+        }
+ 
+    }
+    
+
+    @IBAction func commentButtonTapped(_ sender: UIButton) {
+        delegate?.commentButtonTapped()
     }
     
     /*

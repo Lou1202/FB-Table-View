@@ -24,14 +24,22 @@ class PostTableViewCell: UITableViewCell {
     }
     
     func updateUI(with postInfo: PostInfo) {
-        postMessageLabel.text = postInfo.text
-        postImageView.image = UIImage(named: postInfo.imageName)
-        // 設定背景色為透明
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor.clear
         
-        // cell 的 selectedBackgroundView
-        selectedBackgroundView = backgroundView
+        postMessageLabel.text = postInfo.text
+        if let imageName = postInfo.imageName {
+            if UUID(uuidString: imageName) != nil { // 如果 imageName 是 UUID，则从文件系统读取
+                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                let fileURL = documentsDirectory.appendingPathComponent(imageName)
+
+                postImageView.image = UIImage(contentsOfFile: fileURL.path)
+            } else { // 否则，从 Asset Catalogs 读取
+                postImageView.image = UIImage(named: imageName)
+            }
+        } else {
+            postImageView.image = nil
+        }
+
+        
     }
 
 }
