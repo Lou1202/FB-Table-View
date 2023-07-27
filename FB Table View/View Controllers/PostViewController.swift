@@ -17,27 +17,26 @@ class PostViewController: UIViewController {
     @IBOutlet weak var stateButton: UIButton!
     @IBOutlet weak var addPhotoButton: UIButton!
     var postButton: UIButton!
-    var isPostPublic = true
-    var selectedImage: UIImage?
+    var isPostPublic = true // 貼文公開狀態
+    var selectedImage: UIImage?  // 前一頁選擇的照片
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.hidesBarsOnSwipe = false
         tabBarController?.tabBar.isHidden = true
-        postTextView.delegate = self
+        postTextView.delegate = self // 代理TextView
         updateUI()
         setNavigationbar()
-        // 使用选取的照片更新 UI
+        // 使用選取的照片 更新畫面
         if let image = selectedImage {
             postImageView.image = image
         }
-        
-        // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        // 有選擇圖片 發布按鈕樣式變成藍色
         if selectedImage != nil {
             postButton.backgroundColor = UIColor(red: 23/255, green: 119/255, blue: 241/255, alpha: 1)
         }
@@ -58,6 +57,7 @@ class PostViewController: UIViewController {
         addPhotoButton.layer.borderColor = CGColor(red: 100/255, green: 103/255, blue: 106/255, alpha: 1)
         addPhotoButton.layer.cornerRadius = 10
         
+        // 調整間距 (檢查版本兩種寫法 消除舊版黃色警告)
         if #available(iOS 15.0, *) {
             var config = UIButton.Configuration.plain()
             config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0)
@@ -108,6 +108,7 @@ class PostViewController: UIViewController {
     
     @objc func postButtonTapped() {
         
+        // 沒有文字或圖片 無法發布
         guard !(postTextView.text.isEmpty || postTextView.text == "在想些什麼？") || postImageView.image != nil else {
             return
         }
@@ -138,9 +139,9 @@ class PostViewController: UIViewController {
             postArray.append(postInfo)
         }
         
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true) //發布即跳出視窗
     }
-
+    
     @objc func closeButtonTapped() {
         // 返回上一頁
         self.navigationController?.popViewController(animated: true)

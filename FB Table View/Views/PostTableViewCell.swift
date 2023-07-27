@@ -27,12 +27,12 @@ class PostTableViewCell: UITableViewCell {
         
         postMessageLabel.text = postInfo.text
         if let imageName = postInfo.imageName {
-            if UUID(uuidString: imageName) != nil { // 如果 imageName 是 UUID，则从文件系统读取
+            if UUID(uuidString: imageName) != nil { // imageName是UUID，從文件系統讀取
                 let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
                 let fileURL = documentsDirectory.appendingPathComponent(imageName)
 
                 postImageView.image = UIImage(contentsOfFile: fileURL.path)
-            } else { // 否则，从 Asset Catalogs 读取
+            } else { // 從Asset圖庫讀取
                 postImageView.image = UIImage(named: imageName)
             }
         } else {

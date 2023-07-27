@@ -5,9 +5,9 @@
 //  Created by 楊曜安 on 2023/7/3.
 //
 
-import UIKit
 
-extension CommentTableViewController: PostViewControllerDelegate {
+
+extension CommentTableViewController: CommentViewControllerDelegate {
     
     func updateTable() {
         tableView.reloadData()

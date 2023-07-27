@@ -5,7 +5,6 @@
 //  Created by 楊曜安 on 2023/7/3.
 //
 
-import UIKit
 import PhotosUI
 
 extension PostViewController: PHPickerViewControllerDelegate {
@@ -19,6 +18,7 @@ extension PostViewController: PHPickerViewControllerDelegate {
                 DispatchQueue.main.async {
                     if let image = image as? UIImage {
                         self?.postImageView.image = image
+                        // 變更發布按鈕樣式
                         self?.postButton.backgroundColor = UIColor(red: 23/255, green: 119/255, blue: 241/255, alpha: 1)
                     }
                 }

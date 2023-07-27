@@ -34,13 +34,11 @@ class CommentTableViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         guard let selectSection = selectSection else { return 3 }
-        return 3 + postArray[selectSection].postComments.count
+        return 3 + postArray[selectSection].postComments.count // 留言數增加Section
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
             return 1
     }
     

@@ -10,7 +10,7 @@
 		9A50DB412A2DB75F002597DC /* HomePageTableViewController+PHPickerViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A50DB402A2DB75F002597DC /* HomePageTableViewController+PHPickerViewControllerDelegate.swift */; };
 		9A50DB432A2DB9A5002597DC /* HomePageTableViewController+UICollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A50DB422A2DB9A5002597DC /* HomePageTableViewController+UICollectionViewDataSource.swift */; };
 		9A610FDC2A52A197007E821F /* CommentViewController+CommentButtonDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A610FDB2A52A197007E821F /* CommentViewController+CommentButtonDelegate.swift */; };
-		9A610FDE2A52A28C007E821F /* CommentTableViewController+PostViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A610FDD2A52A28C007E821F /* CommentTableViewController+PostViewControllerDelegate.swift */; };
+		9A610FDE2A52A28C007E821F /* CommentTableViewController+CommentViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A610FDD2A52A28C007E821F /* CommentTableViewController+CommentViewControllerDelegate.swift */; };
 		9A610FE02A52A611007E821F /* PostViewController+PHPickerViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A610FDF2A52A611007E821F /* PostViewController+PHPickerViewControllerDelegate.swift */; };
 		9A640F3C2A30B39C006ED5A3 /* CommentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A640F3B2A30B39C006ED5A3 /* CommentTableViewController.swift */; };
 		9A644A402A272EFE000A778B /* StoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A644A3F2A272EFE000A778B /* StoryTableViewCell.swift */; };
@@ -38,7 +38,7 @@
 		9A50DB402A2DB75F002597DC /* HomePageTableViewController+PHPickerViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomePageTableViewController+PHPickerViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		9A50DB422A2DB9A5002597DC /* HomePageTableViewController+UICollectionViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomePageTableViewController+UICollectionViewDataSource.swift"; sourceTree = "<group>"; };
 		9A610FDB2A52A197007E821F /* CommentViewController+CommentButtonDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CommentViewController+CommentButtonDelegate.swift"; path = "FB Table View/Extensions/CommentViewController+CommentButtonDelegate.swift"; sourceTree = SOURCE_ROOT; };
-		9A610FDD2A52A28C007E821F /* CommentTableViewController+PostViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentTableViewController+PostViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		9A610FDD2A52A28C007E821F /* CommentTableViewController+CommentViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentTableViewController+CommentViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		9A610FDF2A52A611007E821F /* PostViewController+PHPickerViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostViewController+PHPickerViewControllerDelegate.swift"; sourceTree = "<group>"; };
 		9A640F3B2A30B39C006ED5A3 /* CommentTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewController.swift; sourceTree = "<group>"; };
 		9A644A3F2A272EFE000A778B /* StoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryTableViewCell.swift; sourceTree = "<group>"; };
@@ -88,13 +88,13 @@
 			children = (
 				9A644A432A273695000A778B /* TopTableViewCell.swift */,
 				9A644A3F2A272EFE000A778B /* StoryTableViewCell.swift */,
-				9A644A492A286BF1000A778B /* MyStoryCollectionViewCell.swift */,
-				9A644A452A2743CC000A778B /* StoryCollectionViewCell.swift */,
 				9A644A412A272FE9000A778B /* HomePagePostTableViewCell.swift */,
 				9A644A472A2790D4000A778B /* PostButtonTableViewCell.swift */,
 				9AF3C42B2A31B86300E978C3 /* PostTableViewCell.swift */,
 				9AF3C42D2A31C2CB00E978C3 /* LikesTableViewCell.swift */,
 				9AF3C42F2A3207B200E978C3 /* CommentTableViewCell.swift */,
+				9A644A492A286BF1000A778B /* MyStoryCollectionViewCell.swift */,
+				9A644A452A2743CC000A778B /* StoryCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -118,7 +118,7 @@
 				9AE4BE0A2A49B5DF00C90625 /* PostViewController+UITextViewDelegate.swift */,
 				9A610FDF2A52A611007E821F /* PostViewController+PHPickerViewControllerDelegate.swift */,
 				9A610FDB2A52A197007E821F /* CommentViewController+CommentButtonDelegate.swift */,
-				9A610FDD2A52A28C007E821F /* CommentTableViewController+PostViewControllerDelegate.swift */,
+				9A610FDD2A52A28C007E821F /* CommentTableViewController+CommentViewControllerDelegate.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -147,8 +147,8 @@
 				9A9173222A24A65A00AE52A1 /* Main.storyboard */,
 				9A610FD62A5299B5007E821F /* Models */,
 				9A610FD82A529A39007E821F /* View Controllers */,
-				9A610FDA2A529AA9007E821F /* Extensions */,
 				9A610FD72A5299CB007E821F /* Views */,
+				9A610FDA2A529AA9007E821F /* Extensions */,
 				9A9173252A24A65B00AE52A1 /* Assets.xcassets */,
 				9A9173272A24A65B00AE52A1 /* LaunchScreen.storyboard */,
 				9A91732A2A24A65B00AE52A1 /* Info.plist */,
@@ -242,7 +242,7 @@
 				9A644A422A272FE9000A778B /* HomePagePostTableViewCell.swift in Sources */,
 				9A644A462A2743CC000A778B /* StoryCollectionViewCell.swift in Sources */,
 				9A610FE02A52A611007E821F /* PostViewController+PHPickerViewControllerDelegate.swift in Sources */,
-				9A610FDE2A52A28C007E821F /* CommentTableViewController+PostViewControllerDelegate.swift in Sources */,
+				9A610FDE2A52A28C007E821F /* CommentTableViewController+CommentViewControllerDelegate.swift in Sources */,
 				9AF3C4302A3207B200E978C3 /* CommentTableViewCell.swift in Sources */,
 				9A644A442A273695000A778B /* TopTableViewCell.swift in Sources */,
 				9A94910E2A2898AC00FFB424 /* Post.swift in Sources */,

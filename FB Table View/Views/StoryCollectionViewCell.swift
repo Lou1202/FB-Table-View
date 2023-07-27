@@ -12,7 +12,6 @@ class StoryCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var storyProfilePictureImageView: UIImageView!
     @IBOutlet weak var storyPictureImageView: UIImageView!
     @IBOutlet weak var storyNameLabel: UILabel!
-    
     @IBOutlet weak var storyBorderIamgeView: UIImageView!
     
     func updateUI(with postInfo: PostInfo) {

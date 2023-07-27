@@ -7,12 +7,24 @@
 
 import Foundation
 
-struct ReplyComments {
+
+struct PostInfo { // 貼文資訊
     let userName: String
     let profilePictureName: String
-    let content: String
     let timestamp: Date
-    var isLiked: Bool = false {
+    let isPublic: Bool
+    let text: String?
+    let imageName: String?
+    var likes: Int = 0
+    var commentsCount: Int { // 計算屬性（Computed Properties）
+        var count = postComments.count
+        for postComment in postComments {
+            count += postComment.replyComments.count
+        }
+        return count
+    }
+    var shares: Int = 0
+    var isLiked: Bool = false { // 觀察屬性（Property Observers）
         didSet {
             if isLiked {
                 likes += 1
@@ -21,15 +33,23 @@ struct ReplyComments {
             }
         }
     }
-    var likes: Int = 0
+    var likeButtonImageName:String { // 計算屬性（Computed Properties）
+        get {
+            isLiked ? "hand.thumbsup.fill" : "hand.thumbsup"
+        }
+        set {
+            isLiked = newValue == "hand.thumbsup.fill" ? true : false
+        }
+    }
+    var postComments: [PostComment] = []
 }
 
-struct PostComment {
+struct PostComment { // 貼文留言
     let userName: String
     let profilePictureName: String
     let content: String
     let timestamp: Date
-    var isLiked: Bool = false {
+    var isLiked: Bool = false { // 觀察屬性（Property Observers）
         didSet {
             if isLiked {
                 likes += 1
@@ -42,23 +62,12 @@ struct PostComment {
     var replyComments: [ReplyComments] = []
 }
 
-struct PostInfo {
+struct ReplyComments { // 貼文留言中的回覆留言
     let userName: String
     let profilePictureName: String
+    let content: String
     let timestamp: Date
-    let isPublic: Bool
-    let text: String?
-    let imageName: String?
-    var likes: Int = 0
-    var commentsCount: Int {
-        var count = postComments.count
-        for postComment in postComments {
-            count += postComment.replyComments.count
-        }
-        return count
-    }
-    var shares: Int = 0
-    var isLiked: Bool = false {
+    var isLiked: Bool = false { // 觀察屬性（Property Observers）
         didSet {
             if isLiked {
                 likes += 1
@@ -67,15 +76,7 @@ struct PostInfo {
             }
         }
     }
-    var likeButtonImageName:String {
-        get {
-            isLiked ? "hand.thumbsup.fill" : "hand.thumbsup"
-        }
-        set {
-            isLiked = newValue == "hand.thumbsup.fill" ? true : false
-        }
-    }
-    var postComments: [PostComment] = []
+    var likes: Int = 0
 }
 
 func convertStringToDate(_ dateString: String, dateFormat: String = "yyyy/MM/dd HH:mm:ss") -> Date {
