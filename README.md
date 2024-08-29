@@ -13,9 +13,9 @@ delegate(代理機制)和protocol(協議)
 
 PHPickerViewController選擇照片
 
-![image](https://github.com/Lou1202/FB-Table-View/blob/main/FB1.png)
-![image](https://github.com/Lou1202/FB-Table-View/blob/main/FB2.png)
-![image](https://github.com/Lou1202/FB-Table-View/blob/main/FB3.png)
-![image](https://github.com/Lou1202/FB-Table-View/blob/main/FB4.png)
-![image](https://github.com/Lou1202/FB-Table-View/blob/main/FB5.png)
-![image](https://github.com/Lou1202/FB-Table-View/blob/main/FB6.png)
+![image](https://github.com/Lou1202/FB-Table-View/blob/main/FBview1.png)
+![image](https://github.com/Lou1202/FB-Table-View/blob/main/FBview2.png)
+![image](https://github.com/Lou1202/FB-Table-View/blob/main/FBview3.png)
+![image](https://github.com/Lou1202/FB-Table-View/blob/main/FBview4.png)
+![image](https://github.com/Lou1202/FB-Table-View/blob/main/FBview5.png)
+![image](https://github.com/Lou1202/FB-Table-View/blob/main/FBview6.png)
